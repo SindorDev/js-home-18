@@ -1,21 +1,93 @@
-let FirstName = prompt("Enter Your Name");
-let age = prompt("Enter Your Age");
-let email = prompt("Enter Your Email");
-let phone =  prompt("Enter Your Phone Number");
-let country = prompt("Enter Your Country");
-let time = new Date().toLocaleTimeString();
-let arr = 
-{
-    name: FirstName,
-    age: age,
-    email: email,
-    phone: phone,
-    country: country,
-    time:time
-};
-let array = [
+const addBtn = document.querySelector("#add-btn");
+const showBtn = document.querySelector("#show-btn");
+const deleteBtn = document.querySelector("#delete-btn");
+const sortBtn = document.querySelector("#sort-btn");
+const result = document.querySelector("#result");
 
-]
-array.push(arr)
-localStorage.setItem("User", JSON.stringify(array))
-document.write(`${arr.name}\n ${arr.age}\n ${arr.email}\n ${arr.phone}\n ${arr.country}\n ${arr.time}`);
+function NewTodo(ntn, h, m, s, t){
+    this.id = (Math.floor(Math.random() * 100000)+ 1).toString().padStart(6, "0")
+    this.name = ntn
+    this.hours = h.toString().padStart(2, "0")
+    this.minutes = m.toString().padStart(2, "0")
+    this.seconds = s.toString().padStart(2, "0")
+    this.time = t
+}
+
+const ALL_TODOS = JSON.parse(localStorage.getItem("todos")) || [];
+
+const addNewTodo = function(){
+    let newTodoName = prompt("Enter new todoname: ");
+    if(newTodoName && newTodoName.trim() !== ""){
+            let date = new Date()
+            let hours = date.getHours();
+            let minutes = date.getMinutes();
+            let seconds = date.getSeconds();
+            let time = date.getTime();
+            
+            // TODO OBJECT CREATE
+            let newTodoResult = new NewTodo(newTodoName, hours, minutes, seconds, time);
+
+            ALL_TODOS.push(newTodoResult);
+            localStorage.setItem("todos", JSON.stringify(ALL_TODOS));
+    }
+    else{
+            alert("Please enter todo name!")
+    }
+}
+
+
+const showTodos = function(){
+    result.innerHTML = ""
+    ALL_TODOS.forEach(todo => {
+        result.innerHTML += `
+            <div class="todo-item">
+                <span>${todo.id}</span>
+                <h2>${todo.name}</h2>
+                <span>${todo.hours} : ${todo.minutes} : ${todo.seconds}</span>
+            </div>
+        `
+    })
+}
+
+
+const deleteTodo = function(){
+    let deleteId = prompt("Enter todo id: ");
+
+    if(deleteId){
+        let indexOfDeletedElement = ALL_TODOS.findIndex(element => element.id === deleteId);
+        ALL_TODOS.splice(indexOfDeletedElement, 1);
+        localStorage.setItem("todos", JSON.stringify(ALL_TODOS));
+    }
+}
+let sorted = false;
+const sortTodo = function(){
+
+    if(sorted === false){
+        sorted = true;
+        ALL_TODOS.sort((a, b) => {
+            if(a.time > b.time){
+                return -1
+            }
+            else{
+                return 1
+            }
+        })
+    }
+    else{
+        sorted = false;
+        ALL_TODOS.sort((a, b) => {
+            if(a.time > b.time){
+                return 1
+            }
+            else{
+                return -1
+            }
+        })
+    }
+    
+    showTodos();
+}
+addBtn.addEventListener("click", addNewTodo);
+showBtn.addEventListener("click", showTodos);
+deleteBtn.addEventListener("click", deleteTodo);
+sortBtn.addEventListener("click", sortTodo);
