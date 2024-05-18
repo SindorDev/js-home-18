@@ -37,11 +37,10 @@ body{
     gap: 20px 0;    
 }
 
-.todo-item{
+.group{
     width: 100%;
     display: flex;
     align-items: center;
-    max-width: 650px;
     justify-content: space-between;
     padding: 10px 20px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -55,15 +54,25 @@ button{
     background-color: dodgerblue;
     color: #fff;
     cursor: pointer;
+    border: 2px solid transparent;
+    transition: all .5s ease-in-out;
+}
+button:active {
+    transform: scale(1.1);
+}
+button:hover {
+    background-color: transparent;
+    border: 2px solid dodgerblue;
+    color: dodgerblue;
 }
     </style>
 </head>
 <body>
     <div class="wrapper">
-        <button id="show-btn">Show todos</button>
-        <button id="add-btn">Add new todo</button>
-        <button id="delete-btn">Delete todo</button>
-        <button id="sort-btn">Sort todo</button>
+        <button id="add-btn">Added Todo</button>
+        <button id="show-btn">Show Todo</button>
+        <button id="delete-btn">Delete Id</button>
+        <button id="sort-btn">Sorted</button>
         <div id="result"></div>
     </div>
     <script src="./app.js"></script>
